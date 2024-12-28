@@ -1,11 +1,17 @@
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.12)
 project(radiotap)
 
 add_definitions("-D_BSD_SOURCE -D_DEFAULT_SOURCE -DRADIOTAP_SUPPORT_OVERRIDES")
 
-add_library(radiotap SHARED radiotap.c)
+add_library(radiotap radiotap.c)
 set_target_properties(radiotap PROPERTIES
 		      COMPILE_FLAGS "-Wall -Wextra")
+set(public_headers radiotap.h radiotap_iter.h)
+
+target_include_directories(
+	radiotap
+	PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>>
+)
 
 install(TARGETS radiotap DESTINATION lib)
 install(FILES radiotap.h radiotap_iter.h DESTINATION include)
